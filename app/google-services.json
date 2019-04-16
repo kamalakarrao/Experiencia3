@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "301891595920",
+    "firebase_url": "https://experiencia-b682e.firebaseio.com",
+    "project_id": "experiencia-b682e",
+    "storage_bucket": "experiencia-b682e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301891595920:android:deb5b4de5f69b58c",
+        "android_client_info": {
+          "package_name": "com.hkapps.experiencia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "301891595920-bgf1crvrlkmmeutcgh4ronfvelub3cbd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hkapps.experiencia",
+            "certificate_hash": "e687dfc782cf10db0e5e160c7bb7d45b65745ee7"
+          }
+        },
+        {
+          "client_id": "301891595920-bo6b7vsq1empoqj08d4a12u94h396rfo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk104qM9ngDSTUzOGeEyoEjic9y69Xho4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "301891595920-bo6b7vsq1empoqj08d4a12u94h396rfo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
