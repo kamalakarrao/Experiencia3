@@ -1,6 +1,8 @@
 package com.hkapps.experiencia;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +20,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-
+    String unique_id  = "nodemcu1";
+    DatabaseReference ref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -36,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Devices").child("nodemcu1").child("weather");
+        ref = FirebaseDatabase.getInstance().getReference().child("Devices").child(unique_id).child("weather");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -96,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ref.child("rain").setValue("off");
                 }
+
+                backgroundTask("rain");
             }
         });
 
@@ -112,6 +120,9 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ref.child("clouds").setValue("off");
                 }
+
+                backgroundTask("clouds");
+
             }
         });
 
@@ -130,6 +141,12 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ref.child("sunshine").setValue("off");
                 }
+
+                backgroundTask("sunshine");
+
+                backgroundTask("lightning");
+
+
             }
         });
 
@@ -149,6 +166,13 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     ref.child("lightning").setValue("off");
                 }
+
+
+                backgroundTask("sunshine");
+
+                backgroundTask("lightning");
+
+
             }
         });
 
@@ -238,4 +262,55 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+    private void backgroundTask(final String weather_type){
+
+
+        new AsyncTask<Void,Void,Void>(){
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                try {
+                    Thread.sleep(5000);
+
+                    //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Devices").child(unique_id).child("switches");
+                    // Log.e("Inside Asynctask"+model.getName(),"status :"+model.getStatus()+", physical status:"+model.getPhysical_status());
+
+                    ref.child(weather_type).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String status = dataSnapshot.getValue().toString();
+//                            DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference().child("Devices").child(room_id).child("switches");
+
+                            if (status.equals("on")){
+
+                                ref.child(weather_type).setValue("off_confirmed");
+
+                            }else if(status.equals("off")) {
+                                ref.child(weather_type).setValue("on_confirmed");
+
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        }.execute();
+
+    }
+
 }
