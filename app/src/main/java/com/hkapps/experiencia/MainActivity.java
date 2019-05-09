@@ -135,9 +135,19 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
                 if (sunshine_img.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.sunshineoff).getConstantState()) {
-                    ref.child("lightning").setValue("off");
+
 
                     ref.child("sunshine").setValue("on");
+
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    ref.child("lightning").setValue("off");
                 } else {
                     ref.child("sunshine").setValue("off");
                 }
@@ -158,9 +168,19 @@ public class MainActivity extends AppCompatActivity {
                 ImageView lightning_img = (ImageView) findViewById(R.id.lightning_img);
                 if (lightning_img.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.lightningoff).getConstantState()) {
 
-                    ref.child("sunshine").setValue("off");
 
                     ref.child("lightning").setValue("on");
+
+                    try {
+                        Thread.sleep(2000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    ref.child("sunshine").setValue("off");
+
+
+
 
 
                 } else {
