@@ -145,9 +145,24 @@ public class MainActivity extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
 
+        if (dataSnapshot.getValue().equals("on_confirmed")){
+            ref.child("lightning").setValue("off");
 
-                    ref.child("lightning").setValue("off");
+        }
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+});
+
+                 //   ref.child("lightning").setValue("off");
                 } else {
                     ref.child("sunshine").setValue("off");
                 }
@@ -176,8 +191,23 @@ public class MainActivity extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    ref.child("sunshine").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    ref.child("sunshine").setValue("off");
+                            if (dataSnapshot.getValue().equals("on_confirmed")){
+                                ref.child("sunshine").setValue("off");
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                  //  ref.child("sunshine").setValue("off");
 
 
 
@@ -294,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Void doInBackground(Void... voids) {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(3000);
 
                     //DatabaseReference ref2 = FirebaseDatabase.getInstance().getReference().child("Devices").child(unique_id).child("switches");
                     // Log.e("Inside Asynctask"+model.getName(),"status :"+model.getStatus()+", physical status:"+model.getPhysical_status());
