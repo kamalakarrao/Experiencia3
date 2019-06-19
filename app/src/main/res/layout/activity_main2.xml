@@ -52,6 +52,7 @@
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:id="@+id/switch_clouds"
                     android:layout_marginRight="8dp"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -91,6 +92,7 @@
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:id="@+id/switch_rain"
                     android:layout_marginRight="8dp"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -136,6 +138,7 @@
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="8dp"
+                    android:id="@+id/switch_thunder"
                     android:layout_marginRight="8dp"
                     android:layout_height="wrap_content" />
                 <TextView
@@ -178,6 +181,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:enabled="true"
+                    android:id="@+id/switch_sunlight"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:layout_width="wrap_content"

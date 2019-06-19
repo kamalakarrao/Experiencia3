@@ -21,8 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-    String unique_id  = "nodemcu1";
+    String unique_id = "nodemcu1";
     DatabaseReference ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,15 +33,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent  i = new Intent(MainActivity.this,Main2Activity.class);
+                Intent i = new Intent(MainActivity.this, Main2Activity.class);
                 startActivity(i);
             }
         });
@@ -50,33 +49,33 @@ public class MainActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-               // Toast.makeText(MainActivity.this, "Triggered", Toast.LENGTH_SHORT).show();
-           if (dataSnapshot.child("rain").getValue().toString().equals( "off_confirmed")){
-               rainoff();
+                // Toast.makeText(MainActivity.this, "Triggered", Toast.LENGTH_SHORT).show();
+                if (dataSnapshot.child("rain").getValue().toString().equals("off_confirmed")) {
+                    rainoff();
 
-           }else if (dataSnapshot.child("rain").getValue().toString().equals("on_confirmed")){
-               rainon();
-           }
+                } else if (dataSnapshot.child("rain").getValue().toString().equals("on_confirmed")) {
+                    rainon();
+                }
 
-                if (dataSnapshot.child("clouds").getValue().toString().equals("off_confirmed")){
+                if (dataSnapshot.child("clouds").getValue().toString().equals("off_confirmed")) {
                     cloudoff();
 
-                }else if (dataSnapshot.child("clouds").getValue().toString().equals("on_confirmed")){
+                } else if (dataSnapshot.child("clouds").getValue().toString().equals("on_confirmed")) {
                     cloudon();
                 }
 
-                if (dataSnapshot.child("sunshine").getValue().toString().equals("off_confirmed")){
+                if (dataSnapshot.child("sunshine").getValue().toString().equals("off_confirmed")) {
                     sunshineoff();
 
-                }else if (dataSnapshot.child("sunshine").getValue().toString().equals("on_confirmed")){
+                } else if (dataSnapshot.child("sunshine").getValue().toString().equals("on_confirmed")) {
                     sunshineon();
                 }
 
 
-                if (dataSnapshot.child("lightning").getValue().toString().equals("off_confirmed")){
+                if (dataSnapshot.child("lightning").getValue().toString().equals("off_confirmed")) {
                     lightningoff();
 
-                }else if (dataSnapshot.child("lightning").getValue().toString().equals("on_confirmed")){
+                } else if (dataSnapshot.child("lightning").getValue().toString().equals("on_confirmed")) {
                     lightningon();
                 }
 
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageView rain_img = (ImageView) findViewById(R.id.rain_img);
                 if (rain_img.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.rainoff).getConstantState()) {
-                ref.child("rain").setValue("on");
+                    ref.child("rain").setValue("on");
                 } else {
                     ref.child("rain").setValue("off");
                 }
@@ -110,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 backgroundTask("rain");
             }
         });
-
-
 
 
         cloud_button.setOnClickListener(new View.OnClickListener() {
@@ -131,8 +128,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
         sunshine_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,24 +144,24 @@ public class MainActivity extends AppCompatActivity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
+                    ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-        if (dataSnapshot.getValue().equals("on_confirmed")){
-            ref.child("lightning").setValue("off");
+                            if (dataSnapshot.getValue().equals("on_confirmed")) {
+                                ref.child("lightning").setValue("off");
 
-        }
+                            }
 
-    }
+                        }
 
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-    }
-});
+                        }
+                    });
 
-                 //   ref.child("lightning").setValue("off");
+                    //   ref.child("lightning").setValue("off");
                 } else {
                     ref.child("sunshine").setValue("off");
                 }
@@ -199,7 +194,7 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-                            if (dataSnapshot.getValue().equals("on_confirmed")){
+                            if (dataSnapshot.getValue().equals("on_confirmed")) {
                                 ref.child("sunshine").setValue("off");
 
                             }
@@ -211,10 +206,7 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
 
                         }
                     });
-                  //  ref.child("sunshine").setValue("off");
-
-
-
+                    //  ref.child("sunshine").setValue("off");
 
 
                 } else {
@@ -233,64 +225,55 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
     }
 
 
-
-    private void rainon(){
+    private void rainon() {
         ImageView rain_img = (ImageView) findViewById(R.id.rain_img);
         rain_img.setImageResource(R.drawable.rainon);
     }
 
 
-
-
-    private void rainoff(){
+    private void rainoff() {
         ImageView rain_img = (ImageView) findViewById(R.id.rain_img);
         rain_img.setImageResource(R.drawable.rainoff);
     }
 
 
-
-
-
-    private void cloudoff(){
+    private void cloudoff() {
         ImageView cloud_img = (ImageView) findViewById(R.id.cloud_img);
         cloud_img.setImageResource(R.drawable.cloudoff);
     }
 
 
-
-    private void cloudon(){
+    private void cloudon() {
         ImageView cloud_img = (ImageView) findViewById(R.id.cloud_img);
         cloud_img.setImageResource(R.drawable.cloudon);
     }
 
 
-
-
-    private void sunshineon(){
+    private void sunshineon() {
         ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
         ImageView lightning_img = (ImageView) findViewById(R.id.lightning_img);
         sunshine_img.setImageResource(R.drawable.sunshineon);
         lightning_img.setImageResource(R.drawable.lightningoff);
     }
 
-    private void sunshineoff(){
+    private void sunshineoff() {
         ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
         //ImageView lightning_img = (ImageView) findViewById(R.id.lightning_img);
         sunshine_img.setImageResource(R.drawable.sunshineoff);
         //lightning_img.setImageResource(R.drawable.lightningoff);
     }
 
-    private void lightningon(){
+    private void lightningon() {
         ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
         ImageView lightning_img = (ImageView) findViewById(R.id.lightning_img);
         sunshine_img.setImageResource(R.drawable.sunshineoff);
         lightning_img.setImageResource(R.drawable.lightningon);
     }
 
-    private void lightningoff(){
-       // ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
+    private void lightningoff() {
+        // ImageView sunshine_img = (ImageView) findViewById(R.id.sunshine_img);
         ImageView lightning_img = (ImageView) findViewById(R.id.lightning_img);
-      //  sunshine_img.setImageResource(R.drawable.sunshineoff);
+        //  sunshine_img.setImageResource(R.drawable.sunshineoff);
         lightning_img.setImageResource(R.drawable.lightningoff);
     }
 
@@ -318,12 +301,10 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
     }
 
 
+    private void backgroundTask(final String weather_type) {
 
 
-    private void backgroundTask(final String weather_type){
-
-
-        new AsyncTask<Void,Void,Void>(){
+        new AsyncTask<Void, Void, Void>() {
 
             @Override
             protected Void doInBackground(Void... voids) {
@@ -339,11 +320,11 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
                             String status = dataSnapshot.getValue().toString();
 //                            DatabaseReference ref3 = FirebaseDatabase.getInstance().getReference().child("Devices").child(room_id).child("switches");
 
-                            if (status.equals("on")){
+                            if (status.equals("on")) {
 
                                 ref.child(weather_type).setValue("off_confirmed");
 
-                            }else if(status.equals("off")) {
+                            } else if (status.equals("off")) {
                                 ref.child(weather_type).setValue("on_confirmed");
 
                             }
@@ -354,8 +335,6 @@ ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
 
                         }
                     });
-
-
 
 
                 } catch (InterruptedException e) {
