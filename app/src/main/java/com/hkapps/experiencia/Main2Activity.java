@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 
@@ -41,9 +41,21 @@ public class Main2Activity extends AppCompatActivity {
         switch_sunlight = (Switch) findViewById(R.id.switch_sunlight);
         switch_thunder = (Switch) findViewById(R.id.switch_thunder);
 
-        switch_rain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        switch_rain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (switch_rain.isChecked()){
+//                    ref.child("rain").setValue("on");
+//                }else {
+//                    ref.child("rain").setValue("off");
+//                }
+//                backgroundTask("rain");
+//            }
+//        });
+
+        switch_rain.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
                 if (switch_rain.isChecked()){
                     ref.child("rain").setValue("on");
                 }else {
@@ -53,9 +65,22 @@ public class Main2Activity extends AppCompatActivity {
             }
         });
 
-        switch_clouds.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        switch_clouds.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (switch_clouds.isChecked()) {
+//                    ref.child("clouds").setValue("on");
+//                } else {
+//                    ref.child("clouds").setValue("off");
+//                }
+//
+//                backgroundTask("clouds");
+//            }
+//        });
+
+        switch_clouds.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
                 if (switch_clouds.isChecked()) {
                     ref.child("clouds").setValue("on");
                 } else {
@@ -65,10 +90,9 @@ public class Main2Activity extends AppCompatActivity {
                 backgroundTask("clouds");
             }
         });
-
-        switch_sunlight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switch_sunlight.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
                 if (switch_sunlight.isChecked()) {
                     ref.child("sunshine").setValue("on");
                     try {
@@ -97,10 +121,41 @@ public class Main2Activity extends AppCompatActivity {
                 backgroundTask("lightning");
             }
         });
+//        switch_sunlight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (switch_sunlight.isChecked()) {
+//                    ref.child("sunshine").setValue("on");
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    ref.child("lightning").addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.getValue().equals("on_confirmed")) {
+//                                ref.child("lightning").setValue("off");
+//                            }
+//                        }
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//
+//                        }
+//                    });
+//
+//                    //   ref.child("lightning").setValue("off");
+//                } else {
+//                    ref.child("sunshine").setValue("off");
+//                }
+//                backgroundTask("sunshine");
+//                backgroundTask("lightning");
+//            }
+//        });
 
-        switch_thunder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        switch_thunder.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
                 if (switch_thunder.isChecked()) {
                     ref.child("lightning").setValue("on");
                     try {
@@ -126,6 +181,34 @@ public class Main2Activity extends AppCompatActivity {
                 backgroundTask("lightning");
             }
         });
+//        switch_thunder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (switch_thunder.isChecked()) {
+//                    ref.child("lightning").setValue("on");
+//                    try {
+//                        Thread.sleep(2000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    ref.child("sunshine").addListenerForSingleValueEvent(new ValueEventListener() {
+//                        @Override
+//                        public void onDataChange(DataSnapshot dataSnapshot) {
+//                            if (dataSnapshot.getValue().equals("on_confirmed")) {
+//                                ref.child("sunshine").setValue("off");
+//                            }
+//                        }
+//                        @Override
+//                        public void onCancelled(DatabaseError databaseError) {
+//                        }
+//                    });
+//                } else {
+//                    ref.child("lightning").setValue("off");
+//                }
+//                backgroundTask("sunshine");
+//                backgroundTask("lightning");
+//            }
+//        });
 
 
 //        Animation aniFade = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fade_in);

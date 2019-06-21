@@ -13,16 +13,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     String unique_id = "nodemcu1";
     DatabaseReference ref;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        FirebaseAuthenticationProcess();
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -44,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+/*
         ref = FirebaseDatabase.getInstance().getReference().child("Devices").child(unique_id).child("weather");
+
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -87,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+*/
 
 
         Button rain_button = (Button) findViewById(R.id.rain_button);
@@ -101,7 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
                 ImageView rain_img = (ImageView) findViewById(R.id.rain_img);
                 if (rain_img.getDrawable().getConstantState() == getResources().getDrawable(R.drawable.rainoff).getConstantState()) {
-                    ref.child("rain").setValue("on");
+                    String status = "on";
+                    ref.child("rain").setValue(status);
                 } else {
                     ref.child("rain").setValue("off");
                 }
@@ -225,6 +242,66 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                // ...
+            } else {
+                // Sign in failed. If response is null the user canceled the
+                // sign-in flow using the back button. Otherwise check
+                // response.getError().getErrorCode() and handle the error.
+                // ...
+                Toast.makeText(this, response.getError().getErrorCode(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /*@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == RC_SIGN_IN){
+
+            if(resultCode == RESULT_OK){
+
+                Toast.makeText(this, "Welcome", Toast.LENGTH_SHORT).show();
+
+
+
+            }else if(resultCode == RESULT_CANCELED) {
+
+                Toast.makeText(this, "Sign in Cancelled", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
+    }
+*/
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
+
+
     private void rainon() {
         ImageView rain_img = (ImageView) findViewById(R.id.rain_img);
         rain_img.setImageResource(R.drawable.rainon);
@@ -343,6 +420,66 @@ public class MainActivity extends AppCompatActivity {
                 return null;
             }
         }.execute();
+
+    }
+
+
+
+
+    private void FirebaseAuthenticationProcess(){
+
+        mAuth = FirebaseAuth.getInstance();
+
+
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+
+
+
+                    DatabaseReference uploadUserData = FirebaseDatabase.getInstance().getReference().child("Users").child(user.getUid());
+                    uploadUserData.child("email").setValue(user.getEmail().toString());
+                    uploadUserData.child("username").setValue(user.getDisplayName().toString());
+                    uploadUserData.child("userid").setValue(user.getUid().toString());
+
+
+                } else {
+
+                    // User is signed out
+                 //   Log.d(TAG, "onAuthStateChanged:signed_out");
+
+                    //Load LoginScreen
+                    loadFirebaseLoginScreenUi();
+
+                }
+                // ...
+            }
+        };
+    }
+
+
+    private void loadFirebaseLoginScreenUi(){
+
+
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+               // new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build());
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setIsSmartLockEnabled(false)
+                        .setTheme(R.style.LoginTheme)
+                        .setAvailableProviders(providers).build(),
+                RC_SIGN_IN);
+
+
+
+
+
 
     }
 
